@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Order data with basic cleaning and transformation applied. One row per order.
+    columns:
+      - name: order_id
+        description: The unique identifier for each order.
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: The unique identifier for the customer who placed the order. Foreign key to stg_customers.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: ordered_at
+        description: The date and time when the order was placed.
+        tests:
+          - not_null
+      - name: store_id
+        description: "{{ doc('store_id_description') }}"
+        tests:
+          - not_null
+      - name: subtotal
+        description: The subtotal amount of the order before tax.
+      - name: tax_paid
+        description: The tax amount charged on the order.
+      - name: order_total
+        description: The total amount of the order including tax (subtotal + tax_paid).
